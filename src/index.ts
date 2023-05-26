@@ -165,7 +165,12 @@ export const ActionNames = z.enum([
   'colorswithFlash',
 ])
 
-export const InputValues = z.object({ action: ActionNames }).and(z.record(z.unknown()))
+export const InputValues = z
+  .object({
+    /** The name of the Action to perform/execute. */
+    action: ActionNames,
+  })
+  .and(z.record(z.unknown()))
 
 export const AlertInput = z.object({
   /** The name of the color to set the light to. */
