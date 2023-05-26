@@ -354,3 +354,169 @@ export class Busylight {
     return this.send({ action: 'off' })
   }
 }
+
+/**
+ * This class is virtually the same as the {@link Busylight} class, except all of the public
+ * functions return void instead of the response from the Busylight server.
+ */
+export class Voidlight {
+  private client: AxiosInstance
+
+  constructor(baseURL: string = 'http://localhost:8989') {
+    this.client = Axios.create({ baseURL })
+  }
+
+  /**
+   * Sends a request to the Busylight server with the provided parameters converted to a query
+   * string before sending.
+   *
+   * @param params An object containing the parameters to convert to a query string.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async send(params: InputValues): Promise<void> {
+    const res = await this.client.get('/', { params: InputValues.parse(params) })
+
+    if (res.status === 200) return
+    else {
+      console.error(`Failed to send input to Busylight server: ${res.statusText}`)
+      console.error(params)
+
+      throw new Error(`Failed to send request to Busylight server: ${res.statusText}`)
+    }
+  }
+
+  /**
+   * Attempts to turn the Busylight on and set it to the provided color.
+   *
+   * @param color The color to set the light to.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async on(color: ColorNames): Promise<void> {
+    const rgb = colors.keyword.rgb(ColorNames.parse(color))
+
+    return this.send({ action: 'light', red: rgb[0], green: rgb[1], blue: rgb[2] })
+  }
+
+  /**
+   * Play an alert on the Busylight with the provided color, sound, and volume. The following sounds
+   * are available:
+   *
+   * - `0`: No sound
+   * - `1`: Fairy Tale
+   * - `2`: Funky
+   * - `3`: Kuando Train
+   * - `4`: Open Office
+   * - `5`: Quiet
+   * - `6`: Telephone Nordic
+   * - `7`: Telephone Original
+   * - `8`: Telephone Pick Me Up
+   *
+   * @param input The color, sound, and volume to use for the alert.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async alert(input: SoundInput): Promise<void> {
+    const parsed = SoundInput.parse(input)
+    const rgb = colors.keyword.rgb(parsed.color)
+
+    return this.send({
+      action: 'alert',
+      red: rgb[0],
+      green: rgb[1],
+      blue: rgb[2],
+      sound: parsed.sound,
+      volume: parsed.volume,
+    })
+  }
+
+  /**
+   * Blink the Busylight on and off with the provided color.
+   *
+   * @param color The color to blink the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async blink(color: ColorNames): Promise<void> {
+    const rgb = colors.keyword.rgb(ColorNames.parse(color))
+
+    return this.send({ action: 'blink', red: rgb[0], green: rgb[1], blue: rgb[2] })
+  }
+
+  /**
+   * Play a jingle on the Busylight. The following sounds are available:
+   *
+   * - `0`: No sound
+   * - `1`: Fairy Tale
+   * - `2`: Funky
+   * - `3`: Kuando Train
+   * - `4`: Open Office
+   * - `5`: Quiet
+   * - `6`: Telephone Nordic
+   * - `7`: Telephone Original
+   * - `8`: Telephone Pick Me Up
+   *
+   * @param input The color, sound, and volume to use for the jingle.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async jingle(input: SoundInput): Promise<void> {
+    const parsed = SoundInput.parse(input)
+    const rgb = colors.keyword.rgb(parsed.color)
+
+    return this.send({
+      action: 'jingle',
+      red: rgb[0],
+      green: rgb[1],
+      blue: rgb[2],
+      sound: parsed.sound,
+      volume: parsed.volume,
+    })
+  }
+
+  /**
+   * Pulse a given color on the Busylight.
+   *
+   * @param color The color to pulse the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async pulse(color: ColorNames): Promise<void> {
+    const rgb = colors.keyword.rgb(ColorNames.parse(color))
+
+    return this.send({ action: 'pulse', red: rgb[0], green: rgb[1], blue: rgb[2] })
+  }
+
+  /**
+   * Flash the Busylight between two colors.
+   *
+   * @param colorA The first color to flash.
+   * @param colorB The second color to flash.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async flashColors(colorA: ColorNames, colorB: ColorNames): Promise<void> {
+    const rgbA = colors.keyword.rgb(ColorNames.parse(colorA))
+    const rgbB = colors.keyword.rgb(ColorNames.parse(colorB))
+
+    return this.send({
+      action: 'colorswithFlash',
+      red: rgbA[0],
+      green: rgbA[1],
+      blue: rgbA[2],
+      flashred: rgbB[0],
+      flashgreen: rgbB[1],
+      flashblue: rgbB[2],
+    })
+  }
+
+  /**
+   * Disable/turn off the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
+  public async off(): Promise<void> {
+    return this.send({ action: 'off' })
+  }
+}
