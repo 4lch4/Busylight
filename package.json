@@ -1,7 +1,7 @@
 {
   "name": "@4lch4/busylight",
   "displayName": "Busylight",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "My personal library for interacting with my Kuando Busylight.",
   "main": "./dist/index.js",
   "exports": "./dist/index.js",
