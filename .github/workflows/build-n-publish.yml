@@ -19,10 +19,10 @@ jobs:
         with:
           node-version: 20
 
-      - run: pnpm ci
-      - run: pnpm build
+      - run: npm ci
+      - run: npm run build
 
-      - run: pnpm publish
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
