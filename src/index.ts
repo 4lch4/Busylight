@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 //#region Zod Schemas
 /** A Zod enum of available color names. */
-export const ColorNames = z.enum([
+const ColorNames = z.enum([
   'aliceblue',
   'antiquewhite',
   'aqua',
@@ -155,7 +155,7 @@ export const ColorNames = z.enum([
   'yellowgreen',
 ])
 
-export const ActionNames = z.enum([
+const ActionNames = z.enum([
   'light',
   'alert',
   'jingle',
@@ -165,14 +165,14 @@ export const ActionNames = z.enum([
   'colorswithFlash',
 ])
 
-export const InputValues = z
+const InputValues = z
   .object({
     /** The name of the Action to perform/execute. */
     action: ActionNames,
   })
   .and(z.record(z.unknown()))
 
-export const AlertInput = z.object({
+const SoundInput = z.object({
   /** The name of the color to set the light to. */
   color: ColorNames.describe('The color to set the light to.'),
 
@@ -200,6 +200,13 @@ export const AlertInput = z.object({
 })
 //#endregion Zod Schemas
 
+//#region Type Aliases
+export type ColorNames = z.infer<typeof ColorNames>
+export type ActionNames = z.infer<typeof ActionNames>
+export type InputValues = z.infer<typeof InputValues>
+export type SoundInput = z.infer<typeof SoundInput>
+//#region Type Aliases
+
 export class Busylight {
   private client: AxiosInstance
 
@@ -215,7 +222,7 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async send(params: z.infer<typeof InputValues>) {
+  public async send(params: InputValues) {
     params = InputValues.parse(params)
 
     return this.client.get('/', { params })
@@ -228,7 +235,7 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async on(color: z.infer<typeof ColorNames>) {
+  public async on(color: ColorNames) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
 
     return this.send({ action: 'light', red: rgb[0], green: rgb[1], blue: rgb[2] })
@@ -241,17 +248,17 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async alert(input: z.infer<typeof AlertInput>) {
-    input = AlertInput.parse(input)
-    const rgb = colors.keyword.rgb(input.color)
+  public async alert(input: SoundInput) {
+    const parsed = SoundInput.parse(input)
+    const rgb = colors.keyword.rgb(parsed.color)
 
     return this.send({
       action: 'alert',
       red: rgb[0],
       green: rgb[1],
       blue: rgb[2],
-      sound: input.sound,
-      volume: input.volume,
+      sound: parsed.sound,
+      volume: parsed.volume,
     })
   }
 
@@ -262,7 +269,7 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async blink(color: z.infer<typeof ColorNames>) {
+  public async blink(color: ColorNames) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
 
     return this.send({ action: 'blink', red: rgb[0], green: rgb[1], blue: rgb[2] })
@@ -275,17 +282,17 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async jingle(input: z.infer<typeof AlertInput>) {
-    input = AlertInput.parse(input)
-    const rgb = colors.keyword.rgb(input.color)
+  public async jingle(input: SoundInput) {
+    const parsed = SoundInput.parse(input)
+    const rgb = colors.keyword.rgb(parsed.color)
 
     return this.send({
       action: 'jingle',
       red: rgb[0],
       green: rgb[1],
       blue: rgb[2],
-      sound: input.sound,
-      volume: input.volume,
+      sound: parsed.sound,
+      volume: parsed.volume,
     })
   }
 
@@ -296,7 +303,7 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async pulse(color: z.infer<typeof ColorNames>) {
+  public async pulse(color: ColorNames) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
 
     return this.send({ action: 'pulse', red: rgb[0], green: rgb[1], blue: rgb[2] })
@@ -310,7 +317,7 @@ export class Busylight {
    *
    * @returns The response from the Busylight server.
    */
-  public async flashColors(colorA: z.infer<typeof ColorNames>, colorB: z.infer<typeof ColorNames>) {
+  public async flashColors(colorA: ColorNames, colorB: ColorNames) {
     const rgbA = colors.keyword.rgb(ColorNames.parse(colorA))
     const rgbB = colors.keyword.rgb(ColorNames.parse(colorB))
 
