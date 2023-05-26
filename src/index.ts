@@ -2,6 +2,8 @@ import Axios, { AxiosInstance } from 'axios'
 import colors from 'color-convert'
 import { z } from 'zod'
 
+//#region Zod Schemas
+/** A Zod enum of available color names. */
 export const ColorNames = z.enum([
   'aliceblue',
   'antiquewhite',
@@ -191,6 +193,7 @@ export const AlertInput = z.object({
    */
   volume: z.number().min(0).max(100).default(75).optional(),
 })
+//#endregion Zod Schemas
 
 export class Busylight {
   private client: AxiosInstance
