@@ -8,7 +8,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://git.4lch4.io/4lch4/4lch4",
+  "homepage": "https://github.com/4lch4/Busylight",
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.4lch4.io:22022/4lch4/4lch4.git"
+    "url": "git@github.com:4lch4/Busylight.git"
   },
   "author": {
     "name": "4lch4",
@@ -38,7 +38,7 @@
   },
   "bugs": {
     "email": "bugs@4lch4.email",
-    "url": "https://git.4lch4.io/4lch4/4lch4/issues"
+    "url": "https://github.com/4lch4/Busylight/issues"
   },
   "dependencies": {
     "@4lch4/logger": "^1.11.0",
