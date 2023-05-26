@@ -7,7 +7,7 @@
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "type": "module",
-  "license": "GPL-3.0-only",
+  "license": "MIT",
   "homepage": "https://git.4lch4.io/4lch4/4lch4",
   "scripts": {
     "start": "node dist/index.js",
