@@ -250,7 +250,7 @@ export class Busylight {
     const rgb = colors.keyword.rgb(input.color)
 
     return this.send({
-      action: 'alert',
+      action: 'jingle',
       red: rgb[0],
       green: rgb[1],
       blue: rgb[2],
