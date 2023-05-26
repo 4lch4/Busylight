@@ -203,12 +203,12 @@ export class Busylight {
   }
 
   /**
-   * Sends a request to the BusyLight server with the provided parameters converted to a query
+   * Sends a request to the Busylight server with the provided parameters converted to a query
    * string before sending.
    *
    * @param params An object containing the parameters to convert to a query string.
    *
-   * @returns The response from the BusyLight server.
+   * @returns The response from the Busylight server.
    */
   public async send(params: z.infer<typeof InputValues>) {
     params = InputValues.parse(params)
@@ -220,7 +220,8 @@ export class Busylight {
    * Attempts to turn the Busylight on and set it to the provided color.
    *
    * @param color The color to set the light to.
-   * @returns The response from the BusyLight server.
+   *
+   * @returns The response from the Busylight server.
    */
   public async on(color: z.infer<typeof ColorNames>) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
@@ -228,6 +229,13 @@ export class Busylight {
     return this.send({ action: 'light', red: rgb[0], green: rgb[1], blue: rgb[2] })
   }
 
+  /**
+   * Play an alert on the Busylight with the provided color, sound, and volume.
+   *
+   * @param input The color, sound, and volume to use for the alert.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async alert(input: z.infer<typeof AlertInput>) {
     input = AlertInput.parse(input)
     const rgb = colors.keyword.rgb(input.color)
@@ -242,12 +250,26 @@ export class Busylight {
     })
   }
 
+  /**
+   * Blink the Busylight on and off with the provided color.
+   *
+   * @param color The color to blink the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async blink(color: z.infer<typeof ColorNames>) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
 
     return this.send({ action: 'blink', red: rgb[0], green: rgb[1], blue: rgb[2] })
   }
 
+  /**
+   * Play a jingle on the Busylight.
+   *
+   * @param input The color, sound, and volume to use for the jingle.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async jingle(input: z.infer<typeof AlertInput>) {
     input = AlertInput.parse(input)
     const rgb = colors.keyword.rgb(input.color)
@@ -262,12 +284,27 @@ export class Busylight {
     })
   }
 
+  /**
+   * Pulse a given color on the Busylight.
+   *
+   * @param color The color to pulse the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async pulse(color: z.infer<typeof ColorNames>) {
     const rgb = colors.keyword.rgb(ColorNames.parse(color))
 
     return this.send({ action: 'pulse', red: rgb[0], green: rgb[1], blue: rgb[2] })
   }
 
+  /**
+   * Flash the Busylight between two colors.
+   *
+   * @param colorA The first color to flash.
+   * @param colorB The second color to flash.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async flashColors(colorA: z.infer<typeof ColorNames>, colorB: z.infer<typeof ColorNames>) {
     const rgbA = colors.keyword.rgb(ColorNames.parse(colorA))
     const rgbB = colors.keyword.rgb(ColorNames.parse(colorB))
@@ -283,6 +320,11 @@ export class Busylight {
     })
   }
 
+  /**
+   * Disable/turn off the Busylight.
+   *
+   * @returns The response from the Busylight server.
+   */
   public async off() {
     return this.send({ action: 'off' })
   }
