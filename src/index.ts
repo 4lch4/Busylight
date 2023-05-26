@@ -155,15 +155,7 @@ const ColorNames = z.enum([
   'yellowgreen',
 ])
 
-const ActionNames = z.enum([
-  'light',
-  'alert',
-  'jingle',
-  'off',
-  'pulse',
-  'blink',
-  'colorswithFlash',
-])
+const ActionNames = z.enum(['light', 'alert', 'jingle', 'off', 'pulse', 'blink', 'colorswithFlash'])
 
 const InputValues = z
   .object({
@@ -242,7 +234,18 @@ export class Busylight {
   }
 
   /**
-   * Play an alert on the Busylight with the provided color, sound, and volume.
+   * Play an alert on the Busylight with the provided color, sound, and volume. The following sounds
+   * are available:
+   *
+   * - `0`: No sound
+   * - `1`: Fairy Tale
+   * - `2`: Funky
+   * - `3`: Kuando Train
+   * - `4`: Open Office
+   * - `5`: Quiet
+   * - `6`: Telephone Nordic
+   * - `7`: Telephone Original
+   * - `8`: Telephone Pick Me Up
    *
    * @param input The color, sound, and volume to use for the alert.
    *
@@ -276,7 +279,17 @@ export class Busylight {
   }
 
   /**
-   * Play a jingle on the Busylight.
+   * Play a jingle on the Busylight. The following sounds are available:
+   *
+   * - `0`: No sound
+   * - `1`: Fairy Tale
+   * - `2`: Funky
+   * - `3`: Kuando Train
+   * - `4`: Open Office
+   * - `5`: Quiet
+   * - `6`: Telephone Nordic
+   * - `7`: Telephone Original
+   * - `8`: Telephone Pick Me Up
    *
    * @param input The color, sound, and volume to use for the jingle.
    *
