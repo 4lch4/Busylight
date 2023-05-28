@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance } from 'axios'
 import colors from 'color-convert'
 import { z } from 'zod'
+import { logger } from '@4lch4/logger'
 
 //#region Zod Schemas
 /** A Zod enum of available color names. */
@@ -220,6 +221,13 @@ export class Busylight {
     return this.client.get('/', { params })
   }
 
+  public async status() {
+    const res = await this.client.get('/', { params: { action: 'status' } })
+
+    if (res.status === 200) return 'OK'
+    else return { status: res.status, statusText: res.statusText }
+  }
+
   /**
    * Attempts to turn the Busylight on and set it to the provided color.
    *
@@ -383,6 +391,16 @@ export class Voidlight {
       console.error(params)
 
       throw new Error(`Failed to send request to Busylight server: ${res.statusText}`)
+    }
+  }
+
+  public async status() {
+    const res = await this.client.get('/', { params: { action: 'status' } })
+
+    if (res.status === 200) logger.success('Busylight HTTP server is running.')
+    else {
+      logger.error('Busylight HTTP server is not running.')
+      logger.error(res.statusText)
     }
   }
 
